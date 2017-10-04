@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- <appender name="ErrorLog"
+		class="com.ccb.openframework.log.impl.DailyRollingBySizeFileAppender">
+		<param name="Encoding" value="UTF-8" />
+		<param name="Threshold" value="error" />
+		<param name="BufferedIO" value="true" />
+		<param name="BufferSize" value="8192" />
+		<param name="file" value="cmslogs/${weblogic.Name}/cms-all-framework.log" />
+		<param name="MaxFileSize" value="50MB" />
+		<param name="MaxBackupIndex" value="80" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[CCB][CMS][%l][%d{yyyy-MM-dd HH:mm:ss SSS}][%-5p][evtTraceId=%X{['_evt_trace_id']}][transactionCode=%X{['_service_id']}] [seqNo=%X{['_seq_no']}][userMessage=%m]%n" />
+		</layout>
+	</appender> -->
+
+	<appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="[%l][%d{yyyy-MM-dd HH:mm:ss SSS}][%-5p][userMessage=%m]%n" />
+		</layout>
+	</appender>
+
+	<!-- <logger name="com.ccb.openframework.parameter" additivity="false">
+		<level value="error"></level>
+		<appender-ref ref="ErrorLog" />
+	</logger> -->
+
+	<root>
+		<priority value="debug"></priority>
+		<!-- <appender-ref ref="ErrorLog" /> -->
+		<appender-ref ref="ConsoleAppender" />
+	</root>
+</log4j:configuration>
