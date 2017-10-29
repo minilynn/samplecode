@@ -116,6 +116,11 @@ public class Client implements Runnable {
 				}
 			} catch (Exception e) {
 				log.error("与服务端通信异常", e);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					log.error("暂停当前线程执行异常", e);
+				}
 			}
 		}
 	}

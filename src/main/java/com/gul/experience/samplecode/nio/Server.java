@@ -90,22 +90,26 @@ public class Server {
 		@Override
 		public void run() {
 			log.debug("准备接收连接请求");
+			int keys = 0;
 			while (true) {
 				try {
 					// 等待客户端连接
-					connSelector.select();
-					Set<SelectionKey> selectKeys = connSelector.selectedKeys();
-					Iterator<SelectionKey> it = selectKeys.iterator();
+					keys = connSelector.select();
+					if (keys > 0) {
+						log.debug("Selected Keys Count: " + keys);
+						Set<SelectionKey> selectKeys = connSelector.selectedKeys();
+						Iterator<SelectionKey> it = selectKeys.iterator();
 
-					while (it.hasNext()) {
-						SelectionKey key = it.next();
-						it.remove();
-						// 将连接请求的选择键放入待处理队列
-						connQueue.add(key);
-						int num = reqSelectors.size();
-						// 防止监听request的进程都在堵塞中
-						reqSelectors.get(idx).wakeup();
-						idx = (idx + 1) % num;
+						while (it.hasNext()) {
+							SelectionKey key = it.next();
+							if (key.isValid() && key.isAcceptable()) {
+								connQueue.add(key);
+								int num = reqSelectors.size();
+								// 防止监听request的进程都在堵塞中
+								reqSelectors.get(idx).wakeup();
+								idx = (idx + 1) % num;
+							}
+						}
 					}
 				} catch (IOException e) {
 					log.error("接收连接请求异常", e);
